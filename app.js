@@ -3,7 +3,7 @@ function Itaka (baseToursUrl, baseCountriesUrl) {
 	this._baseCountriesUrl = baseCountriesUrl;
 };
 
-Itaka.prototype.getTours = function (filter, currpage, pricetype, eventtype, date_from, date_to, duration, adults,
+Itaka.prototype.getToursAsync = function (filter, currpage, pricetype, eventtype, date_from, date_to, duration, adults,
 	childs, child_age , standard, price, promotions, grade, order) {
 	var baseUrl = this._baseToursUrl;
 	filter = typeof filter !== 'undefined' ? filter : '';
@@ -21,30 +21,19 @@ Itaka.prototype.getTours = function (filter, currpage, pricetype, eventtype, dat
 	promotions = typeof promotions !== 'undefined' ? promotions : ["itakihit"];
 	grade = typeof grade !== 'undefined' ? grade : '';
 	order = typeof order !== 'undefined' ? order : "recommended|asc";
-
-	 $.ajax({
+	return $.ajax({
 		url: baseUrl,
 		type: "GET",
-		dataType: 'jsonp',
-		mimeType: 'xhr',
-		jsonp: false,
-		jsonpCallback: 'jQuery.parseJSON',
+		dataType: 'json',
 		data: { filter: filter, currpage: currpage, pricetype: pricetype, eventtype: eventtype, date_from: date_from, date_to: date_to, duration: duration, adults: adults, 
-		childs: childs, child_age: child_age, standard: standard, price: price, promotions: promotions, grade: grade, order: order },
-		success: function (data){
-			console.log(data);
-		},
-		error: function (xhr, status, error){
-			  var r = jQuery.parseJSON(xhr.responseText);
-			  console.log(r);
-		},
-	 	always: function (data){
-	 		console.log(data);
-	 	}})
-};
+		childs: childs, child_age: child_age, standard: standard, price: price, promotions: promotions, grade: grade, order: order }
+	});
+}
 
 
 $(function(){
-	var itaka = new Itaka("http://www.itaka.pl/ru/strony/4466.php", "");
-	itaka.getTours();
+	var itaka = new Itaka("http://localhost:28692/Api/Mock", "");
+	itaka.getToursAsync().then(function(data){
+		console.log(data);
+	})
 })
