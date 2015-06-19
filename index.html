@@ -17,19 +17,168 @@
     <link href="http://www.itaka.pl/cms/img/1/bootstrap/css/bootstrap_full.min.css" rel="stylesheet" type="text/css" media="screen">
     <link href="http://www.itaka.pl/cms/img/1/textstyle.css" rel="stylesheet" type="text/css" media="screen">
     <link href="http://www.itaka.pl/cms/img/1/css/print.css" rel="stylesheet" type="text/css" media="print">
-    <meta property="og:title" content="I...TAKI HIT! | ITAKA">
 
+    <meta property="og:title" content="I...TAKI HIT! | ITAKA">
+    <script>
+        var clipboard_countUrl = 'http://localhost:28692/api/Strony';
+        var search_validateUrl = 'http://localhost:28692/api/Zero';
+        var search_resultsPages = { "5": "\/ru\/ekskursii\/rezultaty-poiska\/", "6": "\/ru\/citybreak\/rezultaty-poiska\/", "7": "\/ru\/gornolyzhnyj-otdyh\/rezultaty-poiska\/", "9": "\/ru\/strony\/2685.php", "4": "\/ru\/strony\/2685.php", "11": "\/ru\/strony\/141.php", "0": "\/ru\/otdyh\/rezultaty-poiska\/" };
+        var search_mainSearchPageUrl = '/ru/otdyh/rezultaty-poiska/';
+        var search_staticSelectedDestination = false;
+        var search_childTitlePrefix = 'Ребенок';
+        var search_defaultSelectLabel = 'Любое';
+        var search_selectFilterNoMatches = 'brak wyników';
+        var search_selectChosenLabel = 'отборный';
+        var search_selectChosenCounter = '<span class="chosen-count"><%- counter %></span> отборный';
+        var search_selectUnselectAll = 'Удалить выбор';
+        var search_labelAdults = '<%= count %> взрослых';
+        var search_labelChilds = ' и <%= count %> детей';
+
+        var search_resultsUrl = "http://localhost:28692/api/ItakaHit";
+        var search_variantsUrl = '/ru/strony/560.php';
+
+        var search_loadAjaxResults = 1;
+        var search_has_more = 1;
+        var tempValue = true;
+    </script>
 
     <link href="http://www.itaka.pl/cms/img/1/css/plugs/jscrollpane/jquery.jscrollpane.css?v=2.0615" rel="stylesheet" media="screen">
     <link href="http://www.itaka.pl/cms/img/1/cssass/combineStyle.css?v=2.0615" rel="stylesheet" media="screen">
     <link href="http://www.itaka.pl/cms/img/1/cssass/szablonMAIN.css?v=2.0615" rel="stylesheet" media="screen">
     <link href="http://www.itaka.pl/cms/img/1/ITAKA/itaka_tmp.css?v=2.0615" rel="stylesheet" media="screen">
     <link rel="stylesheet" type="text/css" href="http://www.itaka.pl/lp/landing_page.css">
+   	<link href="customStyle.css" rel="stylesheet" type="text/css" media="print">
 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/jquery.lazyload.min.js"></script>
-    <script type="text/javascript" src="app.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <script type="text/javascript" src="http://www.jsviews.com/download/jsrender.js"></script>
+
+
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/underscore.min.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/jquery.magnific-popup.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/common/popup_images.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/cookie.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/common/cookie_info.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/mobile.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/jquery.mobile.custom.min.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/common/misc_extensions.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/cdr/cdr_UID_to_email.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/jquery.jgrowl.min.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/json2.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/clipboard/init.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/search/autosuggest.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/bootstrap-multiselect.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/bootstrap-select.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/moment.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/jquery.jscrollpane.min.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/custom-datepicker.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/jquery.infieldlabel.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/multiselects_mobile_validation.js"></script>
+    <script type="text/javascript" src="searchForm.js"></script>
+    <script type="text/javascript" src="form.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/multiselects-extend.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/jquery.history.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/history.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/URI.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/search/historyAPI.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/search/google_Analytics.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/cdr/cdr_search.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/bootstrap-datepicker.ru.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/lang/custom-datepicker.ru.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/lib/plugs/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/search/SearchResults.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/search/results.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/news/sare.js"></script>
+    <script type="text/javascript" src="http://www.itaka.pl/cms/img/1/js/common/placeholders.js"></script>
+    <script type="text/javascript" src="http://static.criteo.net/js/ld/ld.js" async="true"></script>
+
+    <script type="text/javascript" src="app.js"></script>
+
+    <!--   <script type="text/javascript" src="/min/?f=
+        /cms/img/1/js/lib/underscore.min.js,
+
+        /cms/img/1/bootstrap/js/bootstrap.js,
+
+        /cms/img/1/js/lib/plugs/jquery.magnific-popup.js,
+
+        /cms/img/1/js/common/popup_images.js,
+
+        /cms/img/1/js/lib/plugs/cookie.js,
+
+        /cms/img/1/js/common/cookie_info.js,
+
+        /cms/img/1/js/mobile.js,
+
+        /cms/img/1/js/lib/plugs/jquery.mobile.custom.min.js,
+
+        /cms/img/1/js/common/misc_extensions.js,
+
+        /cms/img/1/js/cdr/cdr_UID_to_email.js,
+
+        /cms/img/1/js/lib/plugs/jquery.jgrowl.min.js,
+
+        /cms/img/1/js/lib/json2.js,
+
+        /cms/img/1/js/clipboard/init.js,
+
+        /cms/img/1/js/search/autosuggest.js,
+
+        /cms/img/1/js/lib/plugs/bootstrap-datepicker.js,
+
+        /cms/img/1/js/lib/plugs/bootstrap-multiselect.js,
+
+        /cms/img/1/js/lib/plugs/bootstrap-select.js,
+
+        /cms/img/1/js/lib/moment.js,
+
+        /cms/img/1/js/lib/plugs/jquery.mousewheel.js,
+
+        /cms/img/1/js/lib/plugs/jquery.jscrollpane.min.js,
+
+        /cms/img/1/js/lib/plugs/custom-datepicker.js,
+
+        /cms/img/1/js/lib/plugs/jquery.infieldlabel.js,
+
+        /cms/img/1/js/lib/plugs/multiselects_mobile_validation.js,
+
+        /cms/img/1/js/search/SearchForm.js,
+
+        /cms/img/1/js/search/form.js,
+
+        /cms/img/1/js/lib/plugs/multiselects-extend.js,
+
+        /cms/img/1/js/lib/jquery.history.js,
+
+        /cms/img/1/js/lib/history.js,
+
+        /cms/img/1/js/lib/URI.js,
+
+        /cms/img/1/js/search/historyAPI.js,
+
+        /cms/img/1/js/search/google_Analytics.js,
+
+        /cms/img/1/js/cdr/cdr_search.js,
+
+        /cms/img/1/js/lib/plugs/bootstrap-datepicker.ru.js,
+
+        /cms/img/1/js/lib/lang/custom-datepicker.ru.js,
+
+        /cms/img/1/js/lib/plugs/jquery.lazyload.min.js,
+
+        /cms/img/1/js/search/SearchResults.js,
+
+        /cms/img/1/js/search/results.js,
+
+        /cms/img/1/js/news/sare.js,
+
+        /cms/img/1/js/common/placeholders.js&amp;v=2.0617">
+
+        </script> -->
+
+
 </head>
 <body class="bd1 lang-pl" style="margin:0;">
 
@@ -76,6 +225,213 @@
     <section id="main">
         <section class="mainbottom">
             <section class="main">
+
+                <!-- wtf???-->
+                <div class="searchbig">
+                    <header class="visible-xs searchbig_header right_sidemenu_toggle">Filtruj <i class="fa fa-fw fa-close"></i></header>
+                    <div class="mobilefilters"></div>
+                    <div class="filters pernam affix-top" data-spy="affix" data-offset-top="160">
+
+                        <div class="affix-wrapper" style="display: block;">
+                            <a href="#" id="collapseFilterBtn" class="btn-filters fcollapse hidden-xs" title="Ukryj filtry">
+                                <p id="filters-txt" data-filterexpand=" Rozwiń filtry" data-filtercollapse="Zwiń filtry" style="display: none;"></p>
+                            </a>
+                            <div class="fRow">
+                            </div>
+                            <div class="fRow fTo">
+                                <label for="destination-select" data-title="Страна">Страна<button class="unselect-all" title="Удалить выбор" style="display: none;">×</button></label>
+                                <select name="destinations[]" id="destination-select" data-placeholder="Введите или выберите направление" data-trans-name="Страна" multiple="" style="display: none;">
+                                    <optgroup label="Самые популярные">
+                                        <option value="francja">Франция</option>
+                                        <option value="grecja">Греция</option>
+                                        <option value="hiszpania">Испания</option>
+                                        <option value="kuba">Куба</option>
+                                        <option value="tajlandia">Таиланд</option>
+                                        <option value="turcja">Турция</option>
+                                        <option value="wlochy">Италия</option>
+                                        <option value="wyspy-kanaryjskie">Канарские острова</option>
+                                        <option value="zanzibar">Занзибар</option>
+                                    </optgroup>
+                                    <optgroup label="От А до Я">
+                                        <option value="albania" data-class="option-parent">Албания</option>
+                                        <option value="argentyna" data-class="option-parent">Аргентина</option>
+                                        <option value="armenia" data-class="option-parent">Армения</option>
+                                        <option value="australia" data-class="option-parent">Австралия</option>
+                                        <option value="austria" data-class="option-parent">Словакия</option>
+                                        <option value="azerbejdzan" data-class="option-parent">Азербайджан</option>
+                                        <option value="azory" data-class="option-parent">Азорские Острова</option>
+                                        <option value="belgia" data-class="option-parent">Бельгия</option>
+                                        <option value="belize" data-class="option-parent">Мексика</option>
+                                        <option value="birma" data-class="option-parent">Бирма</option>
+                                        <option value="boliwia" data-class="option-parent">Перу</option>
+                                        <option value="bosnia-i-hercegowina" data-class="option-parent">Хорватия</option>
+                                        <option value="botswana" data-class="option-parent">Юар</option>
+                                        <option value="brazylia" data-class="option-parent">Бразилия</option>
+                                        <option value="bulgaria" data-class="option-parent">Болгария</option>
+                                        <option value="sozopol" data-class="option-child">Солнечный Берег</option>
+                                        <option value="sloneczny-brzeg" data-class="option-child">Солнечный Берег</option>
+                                        <option value="zlote-piaski" data-class="option-child">Золотые Пески</option>
+                                        <option value="chile" data-class="option-parent">Чили</option>
+                                        <option value="chiny" data-class="option-parent">Китай</option>
+                                        <option value="chorwacja" data-class="option-parent">Хорватия</option>
+                                        <option value="cypr" data-class="option-parent">Кипр</option>
+                                        <option value="larnaka" data-class="option-child">Ларнака</option>
+                                        <option value="pafos" data-class="option-child">Лимассол</option>
+                                        <option value="czarnogora" data-class="option-parent">Черногория</option>
+                                        <option value="czechy" data-class="option-parent">Чешская Республика</option>
+                                        <option value="dania" data-class="option-parent">Дания</option>
+                                        <option value="dominikana" data-class="option-parent">Доминиканская Республика</option>
+                                        <option value="punta-cana" data-class="option-child">Пунта-Кана</option>
+                                        <option value="egipt" data-class="option-parent">Египет</option>
+                                        <option value="hurghada" data-class="option-child">Хургада</option>
+                                        <option value="marsa-el-alam" data-class="option-child">Марса-Алам</option>
+                                        <option value="sharm-el-sheikh" data-class="option-child">Шарм-Эль-Шейх</option>
+                                        <option value="taba" data-class="option-child">Таба</option>
+                                        <option value="ekwador" data-class="option-parent">Колумбия</option>
+                                        <option value="estonia" data-class="option-parent">Литва</option>
+                                        <option value="etiopia" data-class="option-parent">Эфиопия</option>
+                                        <option value="filipiny" data-class="option-parent">Филиппины</option>
+                                        <option value="finlandia" data-class="option-parent">Финляндия</option>
+                                        <option value="francja" data-class="option-parent">Франция</option>
+                                        <option value="grecja" data-class="option-parent">Греция</option>
+                                        <option value="chalkidiki" data-class="option-child">Халькидики</option>
+                                        <option value="korfu" data-class="option-child">Корфу</option>
+                                        <option value="kos" data-class="option-child">Кос</option>
+                                        <option value="kreta" data-class="option-child">Крит</option>
+                                        <option value="lefkada" data-class="option-child">Lefkada</option>
+                                        <option value="naxos" data-class="option-child">Naxos</option>
+                                        <option value="paros" data-class="option-child">Paros</option>
+                                        <option value="peloponez" data-class="option-child">Пелопоннес</option>
+                                        <option value="rodos" data-class="option-child">Родос</option>
+                                        <option value="samos" data-class="option-child">Samos</option>
+                                        <option value="santorini" data-class="option-child">Santorini</option>
+                                        <option value="thassos" data-class="option-child">Тасос</option>
+                                        <option value="zakynthos" data-class="option-child">Закинф</option>
+                                        <option value="grenlandia" data-class="option-parent">Исландия</option>
+                                        <option value="gruzja" data-class="option-parent">Грузия</option>
+                                        <option value="gwatemala" data-class="option-parent">Мексика</option>
+                                        <option value="hiszpania" data-class="option-parent">Испания</option>
+                                        <option value="costa-blanca" data-class="option-child">Коста Бланка</option>
+                                        <option value="costa-brava" data-class="option-child">Коста Брава</option>
+                                        <option value="costa-dorada" data-class="option-child">Коста Дорада</option>
+                                        <option value="costa-de-la-luz" data-class="option-child">Коста Де Ла Лус</option>
+                                        <option value="costa-del-sol" data-class="option-child">Коста Дель Соль</option>
+                                        <option value="formentera" data-class="option-child">Formentera</option>
+                                        <option value="granada" data-class="option-child">Андалусия</option>
+                                        <option value="ibiza" data-class="option-child">Ибица</option>
+                                        <option value="majorka" data-class="option-child">Майорка</option>
+                                        <option value="minorka" data-class="option-child">Минорка</option>
+                                        <option value="holandia" data-class="option-parent">Бельгия</option>
+                                        <option value="honduras" data-class="option-parent">Мексика</option>
+                                        <option value="indie" data-class="option-parent">Индия</option>
+                                        <option value="indonezja" data-class="option-parent">Индонезия</option>
+                                        <option value="iran" data-class="option-parent">Иран</option>
+                                        <option value="irlandia" data-class="option-parent">Ирландия</option>
+                                        <option value="islandia" data-class="option-parent">Исландия</option>
+                                        <option value="izrael" data-class="option-parent">Израиль</option>
+                                        <option value="japonia" data-class="option-parent">Япония</option>
+                                        <option value="jordania" data-class="option-parent">Иордания</option>
+                                        <option value="kambodza" data-class="option-parent">Таиланд</option>
+                                        <option value="kanada" data-class="option-parent">Канада</option>
+                                        <option value="kirgistan" data-class="option-parent">Узбекистан</option>
+                                        <option value="kolumbia" data-class="option-parent">Колумбия</option>
+                                        <option value="kostaryka" data-class="option-parent">Панама</option>
+                                        <option value="krolestwo-suazi" data-class="option-parent">Юар</option>
+                                        <option value="kuba" data-class="option-parent">Куба</option>
+                                        <option value="cayo-santa-maria" data-class="option-child">Cayo Santa Maria</option>
+                                        <option value="holguin" data-class="option-child">Holguin</option>
+                                        <option value="laos" data-class="option-parent">Таиланд</option>
+                                        <option value="litwa" data-class="option-parent">Литва</option>
+                                        <option value="lotwa" data-class="option-parent">Литва</option>
+                                        <option value="luksemburg" data-class="option-parent">Бельгия</option>
+                                        <option value="macedonia" data-class="option-parent">Хорватия</option>
+                                        <option value="madagaskar" data-class="option-parent">Мадагаскар</option>
+                                        <option value="madera" data-class="option-parent">Мадейра</option>
+                                        <option value="malediwy" data-class="option-parent">Шри Ланка</option>
+                                        <option value="malezja" data-class="option-parent">Таиланд</option>
+                                        <option value="malta" data-class="option-parent">Мальта</option>
+                                        <option value="maroko" data-class="option-parent">Марокко</option>
+                                        <option value="agadir" data-class="option-child">Агадир</option>
+                                        <option value="essaouira" data-class="option-child">Essaouira</option>
+                                        <option value="mauritius" data-class="option-parent">Маврикий</option>
+                                        <option value="meksyk" data-class="option-parent">Мексика</option>
+                                        <option value="mongolia" data-class="option-parent">Mongolia</option>
+                                        <option value="nepal" data-class="option-parent">Индия</option>
+                                        <option value="niemcy" data-class="option-parent">Германия</option>
+                                        <option value="norwegia" data-class="option-parent">Норвегия</option>
+                                        <option value="nowa-zelandia" data-class="option-parent">Австралия</option>
+                                        <option value="oman" data-class="option-parent">Арабские Эмираты</option>
+                                        <option value="panama" data-class="option-parent">Панама</option>
+                                        <option value="peru" data-class="option-parent">Перу</option>
+                                        <option value="porto-santo" data-class="option-parent">Португалия</option>
+                                        <option value="portugalia" data-class="option-parent">Испания</option>
+                                        <option value="algarve" data-class="option-child">Algarve</option>
+                                        <option value="reunion" data-class="option-parent">Маврикий</option>
+                                        <option value="rosja" data-class="option-parent">Россия</option>
+                                        <option value="rpa" data-class="option-parent">Юар</option>
+                                        <option value="rumunia" data-class="option-parent">Румыния</option>
+                                        <option value="rwanda" data-class="option-parent">Уганда</option>
+                                        <option value="serbia" data-class="option-parent">Черногория</option>
+                                        <option value="slowacja" data-class="option-parent">Словакия</option>
+                                        <option value="slowenia" data-class="option-parent">Словения</option>
+                                        <option value="sri-lanka" data-class="option-parent">Шри Ланка</option>
+                                        <option value="stany-zjednoczone" data-class="option-parent">Соединенные Штаты</option>
+                                        <option value="suazi" data-class="option-parent">Юар</option>
+                                        <option value="swaziland" data-class="option-parent">Юар</option>
+                                        <option value="szkocja" data-class="option-parent">Шотландия</option>
+                                        <option value="szwajcaria" data-class="option-parent">Италия</option>
+                                        <option value="szwecja" data-class="option-parent">Швеция</option>
+                                        <option value="tajlandia" data-class="option-parent">Таиланд</option>
+                                        <option value="khao-lak" data-class="option-child">Андаманское Побережье</option>
+                                        <option value="krabi" data-class="option-child">Андаманское Побережье</option>
+                                        <option value="phuket" data-class="option-child">Андаманское Побережье</option>
+                                        <option value="tanzania" data-class="option-parent">Танзания</option>
+                                        <option value="tunezja" data-class="option-parent">Тунис</option>
+                                        <option value="hammamet" data-class="option-child">Xаммамет</option>
+                                        <option value="monastir" data-class="option-child">Монастир</option>
+                                        <option value="sousse" data-class="option-child">Сусс</option>
+                                        <option value="turcja" data-class="option-parent">Турция</option>
+                                        <option value="alanya" data-class="option-child">Алания</option>
+                                        <option value="belek" data-class="option-child">Белек</option>
+                                        <option value="bodrum" data-class="option-child">Бодрум</option>
+                                        <option value="cesme" data-class="option-child">Чешме</option>
+                                        <option value="didyma" data-class="option-child">Бодрум</option>
+                                        <option value="kemer" data-class="option-child">Кемер</option>
+                                        <option value="kusadasi" data-class="option-child">Кушадасы</option>
+                                        <option value="marmaris" data-class="option-child">Мармарис</option>
+                                        <option value="oludeniz" data-class="option-child">Oludeniz</option>
+                                        <option value="side" data-class="option-child">Сиде</option>
+                                        <option value="tybet" data-class="option-parent">Китай</option>
+                                        <option value="uganda" data-class="option-parent">Уганда</option>
+                                        <option value="uzbekistan" data-class="option-parent">Узбекистан</option>
+                                        <option value="wegry" data-class="option-parent">Венгрия</option>
+                                        <option value="wenezuela" data-class="option-parent">Венесуэла</option>
+                                        <option value="margarita" data-class="option-child">Остров Маргарита</option>
+                                        <option value="wielka-brytania" data-class="option-parent">Англия</option>
+                                        <option value="wietnam" data-class="option-parent">Таиланд</option>
+                                        <option value="wlochy" data-class="option-parent">Италия</option>
+                                        <option value="kalabria" data-class="option-child">Калабрия</option>
+                                        <option value="sardynia" data-class="option-child">Сардиния</option>
+                                        <option value="sycylia" data-class="option-child">Сицилия</option>
+                                        <option value="wyspy-kanaryjskie" data-class="option-parent">Канарские острова</option>
+                                        <option value="fuerteventura" data-class="option-child">Фуэртевентура</option>
+                                        <option value="gomera" data-class="option-child">Ла Гомера</option>
+                                        <option value="gran-canaria" data-class="option-child">Гран-Канария</option>
+                                        <option value="lanzarote" data-class="option-child">Лансароте</option>
+                                        <option value="teneryfa" data-class="option-child">Тенерифе</option>
+                                        <option value="wyspy-zielonego-przyladka" data-class="option-parent">Кабо-Верде</option>
+                                        <option value="zanzibar" data-class="option-parent">Занзибар</option>
+                                        <option value="zimbabwe" data-class="option-parent">Юар</option>
+                                        <option value="zjednoczone-emiraty-arabskie" data-class="option-parent">Арабские Эмираты</option>
+                                    </optgroup>
+
+                                </select><div class="btn-group selectable">
+                                span class="visible-xs mobile-label">Страна:</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="levall">
                     <div id="tdid_251360" class="td0" style="">
                         <div class="plain">
@@ -85,7 +441,7 @@
                             </div>
 
                             <div class="btn-load-more-offers">
-                            	<div class="results-loading" id="results-loading" style="display: '';">загрузка</div>
+                                <div class="results-loading" id="results-loading" style="display: '';">загрузка</div>
                                 <a class="btn" id="load-more-offers" style="display: none;">Посмотреть больше предложений</a>
                             </div>
                         </div>
