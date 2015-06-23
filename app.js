@@ -1,3 +1,5 @@
+
+
 Date.prototype.addDays = function (days) {
     this.setDate(this.getDate() + parseInt(days));
     return this;
@@ -23,7 +25,11 @@ Array.prototype.first = function () {
 function Itaka(baseToursUrl, baseCountriesUrl) {
     this._baseToursUrl = baseToursUrl;
     this._baseCountriesUrl = baseCountriesUrl;
+    this._countries = [];
 };
+
+var globalItaka = new Itaka("http://localhost:28692/api/ItakaHit", "http://localhost:28692/api/Strony"); 
+
 //http://www.itaka.pl/ajax/search/?filter=&currpage=1&pricetype=person&eventtype=0&date_from=17.06.2015&date_to=17.12.2015&duration=&adults=2&childs=0&child_age%5B%5D=17.06.2010&standard=&price=&grade=&order=recommended%7Casc
 Itaka.prototype.getToursAsync = function (filter, currpage, pricetype, eventtype, date_from, date_to, duration, adults,
 	childs, child_age, standard, price, promotions, grade, order) {
@@ -45,16 +51,72 @@ Itaka.prototype.getToursAsync = function (filter, currpage, pricetype, eventtype
     promotions = typeof promotions !== 'undefined' ? promotions : ["itakihit"];
     grade = typeof grade !== 'undefined' ? grade : '';
     order = typeof order !== 'undefined' ? order : "recommended|asc";
+    destinations = this.getCountryList();
     return $.ajax({
         url: baseUrl,
         type: "GET",
         dataType: 'json',
         data: {
             filter: filter, currpage: currpage, pricetype: pricetype, eventtype: eventtype, date_from: date_from, date_to: date_to, duration: duration, adults: adults,
-            childs: childs, child_age: child_age, standard: standard, price: price, promotions: promotions, grade: grade, order: order
+            childs: childs, child_age: child_age, standard: standard, price: price, promotions: promotions, grade: grade, order: order, destinations: destinations
         }
     });
 };
+
+Itaka.prototype.setCountryFilter = function(countryList){
+	this._countries = countryList;
+	this.filteringTours(1);
+}
+
+Itaka.prototype.getCountryList = function(){
+	return this._countries;
+}
+
+Itaka.prototype.filteringTours = function(page){
+		$('#hotelSlider').css('display', 'none');
+		$('#results-loading').css('display', '');
+		this.getToursAsync(undefined, page).then(function(data) {
+            data.results.forEach(function(element) {
+                var tempArray = element.destination.split('\\');
+                element.destination = tempArray.last();
+                element.title = element.title.split('(').first();
+            });
+            console.log(data.has_more);
+            if (!data.has_more) {
+                $('#load-more-offers').css('display', 'none');
+            }
+
+            else {
+            	 $('#load-more-offers').css('display', '');
+            }
+            $('#hotelSlider').html(
+                $('#hotelTemplate').render(data.results));
+            $("img.hotel_img").lazyload();
+            $('#results-loading').css('display', 'none');
+            $('#hotelSlider').css('display', '');
+        });
+}
+
+Itaka.prototype.showMoreTours = function(page){
+	this.getToursAsync(undefined, page).then(function(data) {
+            data.results.forEach(function(element) {
+                var tempArray = element.destination.split('\\');
+                element.destination = tempArray.last();
+                element.title = element.title.split('(').first();
+            });
+            
+            if (!data.has_more) {
+                $('#load-more-offers').css('display', 'none');
+            }
+            else {
+            	$('#load-more-offers').css('display', '');
+            }
+            $('#hotelSlider').append(
+                $('#hotelTemplate').render(data.results));
+            $("img.hotel_img").lazyload();
+            $('#results-loading').css('display', 'none');
+        });
+}
 
 Itaka.prototype.getCountriesAsync = function (filter, currpage, pricetype, eventtype, date_from, date_to, duration, adults,
 	childs, child_age, standard, price, promotions, grade, order) {
@@ -87,36 +149,17 @@ Itaka.prototype.getCountriesAsync = function (filter, currpage, pricetype, event
     });
 };
 
+
+
 $(function () {
 
     var page = 1;
-    var itaka = new Itaka("http://localhost:28692/api/ItakaHit", "http://localhost:28692/api/Strony");
-    showMoreTours(page);
+    var itaka = globalItaka;
 
     $('#load-more-offers').click(function () {
         $('#load-more-offers').css('display', 'none');
         $('#results-loading').css('display', '');
         page += 1;
-        showMoreTours(page);
+        itaka.showMoreTours(page);
     });
-
-
-
-    function showMoreTours(page) {
-        itaka.getToursAsync(undefined, page).then(function(data) {
-            data.results.forEach(function(element) {
-                var tempArray = element.destination.split('\\');
-                element.destination = tempArray.last();
-                element.title = element.title.split('(').first();
-            });
-            if (!data.has_more) {
-                $('#load-more-offers').remove();
-            }
-            $('#hotelSlider').append(
-                $('#hotelTemplate').render(data.results));
-            $("img.hotel_img").lazyload();
-            $('#results-loading').css('display', 'none');
-            $('#load-more-offers').css('display', '');
-        });
-    };
 })

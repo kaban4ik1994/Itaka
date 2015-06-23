@@ -361,22 +361,30 @@
                     $unselectAllButton = $('<button />').addClass('unselect-all').html('&times;').attr('title', search_selectUnselectAll);
 
                 function updateOfChosenLabelsAndUnselectAll($input, $select) {
+
                     var selectable = $select.data('selectable'),
                         $chosenOptions = selectable.getSelectedOptions(),
-                        chosenLabels = [];
+                        chosenLabels = [],
+                        chosenValues = [];
+
+                    // End test bla
 
                     if ($chosenOptions.length) {
                         $chosenOptions.each(function () {
                             chosenLabels.push($(this).data('label') || $(this).text());
+                            console.log($(this))
+                            chosenValues.push($(this).val());
                         });
 
                         selectable.$button.attr('title', search_selectChosenLabel + ': ' + chosenLabels.join(', '));
                         $unselectAllButton.toggle(!hideUnselectAll ? true : false);
+                        
                     }
                     else {
                         selectable.$button.attr('title', '');
                         $unselectAllButton.toggle(false);
                     }
+                     globalItaka.setCountryFilter(chosenValues);
                 }
 
                 $select.selectable({
